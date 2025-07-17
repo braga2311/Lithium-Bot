@@ -1,5 +1,5 @@
-# Lithium Bot - Documentação Técnica
-
+##          Lithium Bot
+![](Assets/6cbf13c21017f183cff95a6a93d2cb98.jpg)
 ![Badge Status](https://img.shields.io/badge/Status-Ativo-brightgreen)
 ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![Discord.py](https://img.shields.io/badge/discord.py-2.0%2B-blue)
@@ -165,8 +165,4 @@ Contribuições são bem-vindas. Siga o padrão existente de:
 2. Documentar no menu.py
 3. Manter consistência com a estrutura atual
 
-## Contato
-
-Desenvolvedor: Braga  
-GitHub: [braga2311](https://github.com/braga2311)  
-Repositório: [Lithium-Bot](https://github.com/braga2311/Lithium-Bot)
+##
