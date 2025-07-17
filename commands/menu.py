@@ -31,7 +31,7 @@ class Menu(commands.Cog):
             inline=False
         )
 
-        # Comandos de consulta
+        # Consultas públicas
         embed.add_field(
             name="🔍 Consultas Públicas",
             value=(
@@ -49,7 +49,20 @@ class Menu(commands.Cog):
             inline=False
         )
 
-        # Comandos de jogos de azar
+        # Geração de documentos
+        embed.add_field(
+            name="📄 Geração de Documentos (Testes)",
+            value=(
+                "`!gerarcpf` - CPF válido e formatado\n"
+                "`!gerarcnh` - CNH com DV válido\n"
+                "`!gerarcep` - CEP possível\n"
+                "`!gerartitulo` - Título de eleitor válido\n"
+                "`!gerartudo` - Gera todos os documentos juntos"
+            ),
+            inline=False
+        )
+
+        # Jogos de azar
         embed.add_field(
             name="🎰 Jogos de Azar",
             value=(
@@ -65,7 +78,7 @@ class Menu(commands.Cog):
             inline=False
         )
 
-        # Comandos de interação
+        # Interação
         embed.add_field(
             name="😄 Brincadeiras & Interação",
             value=(
@@ -78,7 +91,7 @@ class Menu(commands.Cog):
             inline=False
         )
 
-        # Comandos de utilidades
+        # Utilidades
         embed.add_field(
             name="🛠️ Utilidades",
             value=(
@@ -91,7 +104,7 @@ class Menu(commands.Cog):
             inline=False
         )
 
-        # Comandos de imagens
+        # Imagens
         embed.add_field(
             name="🖼️ Imagens",
             value=(
@@ -104,7 +117,7 @@ class Menu(commands.Cog):
             inline=False
         )
 
-        embed.set_footer(text="Se possivel, por favor, siga o desenvolvedor do bot no instagram: braga12737!")
+        embed.set_footer(text="Se possível, siga o desenvolvedor no Instagram: @braga12737")
         await ctx.send(embed=embed)
 
 async def setup(bot):
