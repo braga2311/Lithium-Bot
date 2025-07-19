@@ -1,9 +1,9 @@
 import os
 import discord
 from discord.ext import commands
-import importlib
+import asyncio
 
-TOKEN = os.environ["DISCORD_TOKEN"]
+TOKEN = "MTEwNz...coloque_seu_token_aqui..."
 COMMAND_PREFIX = "!"
 
 intents = discord.Intents.all()
@@ -16,11 +16,14 @@ async def on_ready():
 async def load_extensions():
     for filename in os.listdir("./commands"):
         if filename.endswith(".py") and not filename.startswith("__"):
-            await bot.load_extension(f"commands.{filename[:-3]}")
+            try:
+                await bot.load_extension(f"commands.{filename[:-3]}")
+                print(f"✅ Comando {filename} carregado.")
+            except Exception as e:
+                print(f"❌ Erro ao carregar {filename}: {e}")
 
 async def main():
     await load_extensions()
     await bot.start(TOKEN)
 
-import asyncio
 asyncio.run(main())
