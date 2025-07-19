@@ -1,168 +1,145 @@
-##          Lithium Bot
-![](Assets/6cbf13c21017f183cff95a6a93d2cb98.jpg)
-![Badge Status](https://img.shields.io/badge/Status-Ativo-brightgreen)
-![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Discord.py](https://img.shields.io/badge/discord.py-2.0%2B-blue)
+# Lithium Bot
 
 ## Visão Geral
-
-O Lithium Bot é um bot para Discord desenvolvido em Python utilizando a biblioteca `discord.py`. Sua arquitetura modular permite fácil expansão de funcionalidades através do sistema de Cogs.
+O Lithium Bot é um bot multifuncional para Discord desenvolvido em Python utilizando a biblioteca `discord.py`. Ele oferece uma ampla variedade de comandos organizados em categorias como administração, utilidades, jogos, brincadeiras e geração de dados fictícios para testes.
 
 ## Estrutura do Projeto
 
 ```
-Lithium-Bot/
+lithium-bot/
+├── bot.py                # Ponto de entrada principal
+├── config.py             # Configurações do bot
 ├── commands/
-│   ├── admin.py
-│   ├── brincadeiras.py
-│   ├── consultas.py
-│   ├── imagens.py
-│   ├── jogos.py
-│   ├── jogos-azar.py
-│   ├── menu.py
-│   └── utilidades.py
-├── config.py
-└── bot.py
-```
-
-## Como Criar Novos Comandos
-
-### 1. Criando um novo arquivo de comandos
-
-Na pasta `commands`, crie um novo arquivo Python (ex: `meu_comando.py`) com a seguinte estrutura básica:
-
-```python
-from discord.ext import commands
-
-class MeuComando(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command(name="nomecomando")
-    async def comando(self, ctx, *args):
-        """Descrição do comando que aparece no !help"""
-        # Implementação do comando aqui
-        await ctx.send("Resposta do comando")
-
-async def setup(bot):
-    await bot.add_cog(MeuComando(bot))
-```
-
-### 2. Adicionando ao menu de ajuda
-
-Edite o arquivo `menu.py` para incluir seu novo comando na seção apropriada:
-
-```python
-embed.add_field(
-    name="Categoria do Comando",
-    value=(
-        # Comandos existentes...
-        "`!nomecomando` - Descrição breve do comando\n"
-    ),
-    inline=False
-)
-```
-
-### 3. O bot carregará automaticamente
-
-O sistema de carregamento automático em `bot.py` já detectará seu novo arquivo na próxima reinicialização:
-
-```python
-async def load_extensions():
-    for filename in os.listdir("./commands"):
-        if filename.endswith(".py") and not filename.startswith("__"):
-            await bot.load_extension(f"commands.{filename[:-3]}")
-```
-
-## Tipos de Comandos
-
-### Comandos Básicos
-
-```python
-@commands.command(name="ping")
-async def ping(self, ctx):
-    """Verifica a latência do bot"""
-    await ctx.send(f"Pong! {round(self.bot.latency * 1000)}ms")
-```
-
-### Comandos com Argumentos
-
-```python
-@commands.command(name="echo")
-async def echo(self, ctx, *, mensagem: str):
-    """Repete a mensagem enviada"""
-    await ctx.send(mensagem)
-```
-
-### Comandos com Permissões
-
-```python
-@commands.has_permissions(kick_members=True)
-@commands.command(name="kick")
-async def kick(self, ctx, member: discord.Member, *, reason=None):
-    """Expulsa um membro do servidor"""
-    await member.kick(reason=reason)
-    await ctx.send(f"{member.mention} foi expulso.")
-```
-
-## Exemplo Completo
-
-`commands/exemplo.py`:
-```python
-from discord.ext import commands
-import random
-
-class Exemplo(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-
-    @commands.command(name="dado")
-    async def dado(self, ctx, lados: int = 6):
-        """Rola um dado com o número de lados especificado"""
-        if lados < 2:
-            await ctx.send("O dado deve ter pelo menos 2 lados")
-            return
-        
-        resultado = random.randint(1, lados)
-        await ctx.send(f"🎲 Resultado: {resultado}")
-
-async def setup(bot):
-    await bot.add_cog(Exemplo(bot))
-```
-
-Adicione em `menu.py`:
-```python
-embed.add_field(
-    name="Jogos",
-    value=(
-        # Outros comandos...
-        "`!dado [lados]` - Rola um dado com N lados\n"
-    ),
-    inline=False
-)
+│   ├── admin.py          # Comandos de administração
+│   ├── brincadeiras.py   # Comandos de interação divertida
+│   ├── consultas.py      # Comandos de consulta pública
+│   ├── imagens.py        # Comandos relacionados a imagens
+│   ├── jogos.py          # Comandos de jogos simples
+│   ├── jogos-azar.py     # Comandos de jogos de azar
+│   ├── menu.py           # Menu de ajuda organizado
+│   ├── utilidades.py     # Comandos utilitários
+│   └── gerar-dados-falsos.py # Geradores
 ```
 
 ## Requisitos Técnicos
 
 - Python 3.8 ou superior
-- Bibliotecas:
-  - discord.py >= 2.0
-  - requests (para comandos de API)
-- Token de bot Discord válido
+- Bibliotecas principais:
+  - discord.py (2.3.2 ou superior)
+  - requests (para comandos de consulta)
+- Variáveis de ambiente necessárias:
+  - `DISCORD_TOKEN`: Token de autenticação do bot
+  - `BOT_OWNER_ID`: ID do dono do bot (opcional)
+
+## Funcionalidades Principais
+
+### 1. Administração
+- Moderação avançada (kick, ban, mute, purge)
+- Gerenciamento de canais (lock, unlock, slowmode)
+- Gerenciamento de cargos e nicknames
+- Sistema de votação integrado
+- Visualização de informações do servidor e usuários
+
+### 2. Utilidades
+- Visualização de avatares e informações de usuários
+- Sistema de lembretes temporizados
+- Geração de convites para o servidor
+- Criação de QR Codes
+
+### 3. Jogos e Diversão
+- Jogos de azar (roleta russa, blackjack, loteria)
+- Comandos de interação (beijo, tapa, ship)
+- Gerador de memes e imagens aleatórias
+- Sistema de escolha aleatória
+
+### 4. Consultas Públicas
+- Validação de CPF/CNPJ
+- Consulta de CEP, DDD e informações geográficas
+- Verificação de dados de cartões (BIN)
+- Cotação de moedas em tempo real
+
+### 5. Geração de Dados Fictícios
+- Geradores de documentos para testes:
+  - CPF válido formatado
+  - Número de CNH com dígitos verificadores
+  - CEP válido
+  - Título de eleitor
 
 ## Configuração
 
-1. Configure as variáveis:
+1. Clone o repositório:
+```bash
+git clone https://github.com/braga2311/Lithium-Bot.git
+cd lithium-bot
 ```
-DISCORD_TOKEN=seu_token_aqui
-BOT_OWNER_ID=seu_id_de_usuario
+
+2. Instale as dependências:
+```bash
+pip install -r requirements.txt
 ```
 
-## Contribuição
+3. Configure as variáveis de ambiente:
+```bash
+export DISCORD_TOKEN="seu_token_aqui"
+export BOT_OWNER_ID="seu_id_discord"
+```
 
-Contribuições são bem-vindas. Siga o padrão existente de:
-1. Criar comandos em arquivos separados
-2. Documentar no menu.py
-3. Manter consistência com a estrutura atual
+4. Execute o bot:
+```bash
+python bot.py
+```
 
+## Comandos Disponíveis
+
+O bot possui um sistema de menu integrado (!menu) que organiza todos os comandos em categorias. Os principais comandos incluem:
+
+### Administração
+- `!ping` - Verifica a latência do bot
+- `!expulsar @usuário` - Expulsa um membro
+- `!banir @usuário` - Bane um membro
+- `!limpar [n]` - Limpa mensagens
+- `!slowmode [s]` - Ativa slowmode
+
+### Utilidades
+- `!avatar @usuário` - Mostra o avatar
+- `!userinfo @usuário` - Informações do usuário
+- `!serverinfo` - Informações do servidor
+- `!lembrete [min] [msg]` - Define lembrete
+- `!qr [texto]` - Gera QR Code
+
+### Jogos
+- `!roleta` - Roleta russa
+- `!blackjack` - Jogo simplificado
+- `!loteria` - Números da sorte
+- `!coinflip` - Cara ou coroa
+- `!dados [qtd]` - Rola dados
+
+### Diversão
+- `!beijo @usuário` - Manda beijo
+- `!tapa @usuário` - Dá tapa virtual
+- `!ship @user1 @user2` - Compatibilidade
+- `!meme` - Meme aleatório
+- `!gato` - Foto de gato
+
+## Considerações de Segurança
+
+1. **Permissões**: O bot requer apenas as permissões necessárias para cada funcionalidade.
+2. **Dados Fictícios**: Os documentos gerados são apenas para testes e não devem ser usados para fins ilícitos.
+3. **Logs**: Recomenda-se implementar um sistema de logs para auditoria de comandos administrativos.
+4. **Atualizações**: Mantenha o bot e suas dependências sempre atualizadas.
+
+## Roadmap Futuro
+
+- Implementar sistema de economia com moeda virtual
+- Adicionar mais jogos multiplayer
+- Integração com APIs de clima e notícias
+- Sistema de tickets para suporte
+- Comandos de música melhorados
+
+## Suporte
+
+Para suporte técnico ou relatório de bugs, entre em contato com os desenvolvedores: [bragasupport](https://discord.gg/e6MbPGT7)
+---
+
+**Nota**: Esta documentação foi gerada com base no código fonte atual e está sujeita a atualizações conforme o desenvolvimento do bot evolui.
 ##
